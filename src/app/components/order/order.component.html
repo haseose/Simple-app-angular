@@ -1,0 +1,96 @@
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel class="example-panel-body" [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h1>Product List</h1>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+      <form>
+      <mat-form-field>
+        <mat-label>Change To Currency</mat-label>
+        <mat-select (selectionChange)="changeProductPrice($event)">
+          <mat-option *ngFor="let currency of currencies" [value]="currency">
+            {{currency}}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Current Currency : {{currentCurrency}}</mat-hint>
+      </mat-form-field>
+    </form>
+    <div *ngFor="let product of products">
+      <div class="card mb-3" style="max-width: 100%;">
+        <div class="row g-0">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-md-3 align-self-center">
+                <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" class="img-fluid rounded-start"
+                  alt="...">
+              </div>
+              <div class="col-md-6">
+                <div class="card-body">
+                    <div class="col-md-12">
+                      <h4 class="card-title">Name : {{product.name}}</h4>
+                      <h5 class="card-title">Price : {{product.unitPrice | number : '1.2-2'}} {{product.currency}}</h5>
+                      <p class="card-text">{{product.description}}</p>
+                    </div>
+                    <!-- <div class="col-2 align-self-center">
+                      <form>
+                        <mat-form-field class="example-user-input">
+                          <mat-label>Quantity</mat-label>
+                          <input matInput type="number"
+                            (change)="validateMaximumQuantity($event, product)"
+                            aria-label="Adds a delay between hovering away from the button and hiding the tooltip">
+                            <mat-hint *ngIf="product.maximumQuantity !== null">Maximum Quantity :
+                              {{product.maximumQuantity}}
+                            </mat-hint>
+                          </mat-form-field>
+                     </form>
+                    </div> -->
+                  </div>
+              </div>
+              <div class="col-md-3 align-self-center">
+                <form>
+                  <mat-form-field class="example-user-input">
+                    <mat-label>Quantity</mat-label>
+                    <input matInput type="number"
+                      (change)="validateMaximumQuantity($event, product)"
+                      aria-label="Adds a delay between hovering away from the button and hiding the tooltip">
+                      <mat-hint *ngIf="product.maximumQuantity !== null">Maximum Quantity :
+                        {{product.maximumQuantity}}
+                      </mat-hint>
+                    </mat-form-field>
+               </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input type="text" matInput [formControl]="nameFormControl">
+        <mat-error *ngIf="nameFormControl.hasError('required')">
+          Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
+        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="emailFormControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    <div class="d-grid gap-2">
+      <button (click)="submitOrder()" class="btn btn-primary" type="submit">Submit Order</button>
+    </div>
+  </form>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<ng-container *ngIf="loading$ | async">
+  <div class="overlay"></div>
+  <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+</ng-container>
